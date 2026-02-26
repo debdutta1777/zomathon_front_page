@@ -1,0 +1,1225 @@
+/* ===== RESET & BASE ===== */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: #1c1c1c;
+    background: #fff;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale
+}
+
+a {
+    text-decoration: none;
+    color: inherit
+}
+
+img {
+    max-width: 100%;
+    display: block
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    font-family: inherit
+}
+
+/* ===== KEYFRAMES ===== */
+@keyframes floatY {
+
+    0%,
+    100% {
+        transform: translateY(0)
+    }
+
+    50% {
+        transform: translateY(-18px)
+    }
+}
+
+@keyframes floatRot {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg)
+    }
+
+    50% {
+        transform: translateY(-14px) rotate(4deg)
+    }
+}
+
+@keyframes coinSpin {
+
+    0%,
+    100% {
+        transform: translateY(0) rotateY(0)
+    }
+
+    50% {
+        transform: translateY(-12px) rotateY(25deg)
+    }
+}
+
+@keyframes goldShimmer {
+    0% {
+        background-position: -200% center
+    }
+
+    100% {
+        background-position: 200% center
+    }
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px)
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0)
+    }
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(90deg)
+    }
+
+    50% {
+        transform: translateY(6px) rotate(90deg)
+    }
+}
+
+@keyframes sparkle {
+
+    0%,
+    100% {
+        opacity: 0.2;
+        transform: scale(0.8)
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: scale(1.2)
+    }
+}
+
+.anim {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.9s cubic-bezier(.22, 1, .36, 1), transform 0.9s cubic-bezier(.22, 1, .36, 1)
+}
+
+.anim.show {
+    opacity: 1;
+    transform: translateY(0)
+}
+
+/* ===== SECTION 1: HERO ===== */
+.hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 700px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden
+}
+
+.hero-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.7) 100%);
+    z-index: 1
+}
+
+/* Nav */
+.nav {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    transition: all 0.35s ease
+}
+
+.nav.sticky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3)
+}
+
+.nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center
+}
+
+.nav.sticky .nav-inner {
+    padding: 14px 40px
+}
+
+.logo-text {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 28px;
+    color: #fff;
+    letter-spacing: 1px
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px
+}
+
+.nav-link-text {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: 8px;
+    transition: background 0.2s
+}
+
+.nav-link-text:hover {
+    background: rgba(255, 255, 255, 0.1)
+}
+
+.btn {
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 22px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: inline-block
+}
+
+.btn-outline-white {
+    color: #fff;
+    border: 1.5px solid rgba(255, 255, 255, 0.5)
+}
+
+.btn-outline-white:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: #fff
+}
+
+.btn-primary {
+    background: #E23744;
+    color: #fff;
+    border: none
+}
+
+.btn-primary:hover {
+    background: #cb2d3a;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(226, 55, 68, 0.4)
+}
+
+/* Hero Body */
+.hero-body {
+    position: relative;
+    z-index: 10;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 24px 50px
+}
+
+.hero-logo {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 44px;
+    color: #fff;
+    margin-bottom: 6px;
+    letter-spacing: 3px
+}
+
+.hero-heading {
+    font-size: 50px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 18px
+}
+
+.hero-sub {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.65;
+    margin-bottom: 36px;
+    font-weight: 400
+}
+
+/* Store badges */
+.hero-stores {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 48px
+}
+
+.store-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 22px;
+    border: 1.5px solid rgba(255, 255, 255, 0.45);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(8px);
+    transition: all 0.3s
+}
+
+.store-badge:hover {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25)
+}
+
+.store-icon {
+    flex-shrink: 0
+}
+
+.store-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start
+}
+
+.store-small {
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.75);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    line-height: 1
+}
+
+.store-big {
+    font-size: 17px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2
+}
+
+/* Scroll down */
+.hero-scroll {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.3s
+}
+
+.hero-scroll:hover {
+    color: #fff
+}
+
+.scroll-chevrons {
+    display: inline-block;
+    font-size: 18px;
+    animation: bounce 2s ease-in-out infinite;
+    font-weight: 700
+}
+
+/* ===== SECTION 2: BETTER FOOD ===== */
+.food-section {
+    position: relative;
+    padding: 120px 24px 100px;
+    background: #fff;
+    overflow: hidden;
+    min-height: 680px;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+/* Pink rings */
+.ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1.5px solid rgba(226, 55, 68, 0.1)
+}
+
+.ring-1 {
+    width: 320px;
+    height: 320px;
+    top: -60px;
+    left: -100px
+}
+
+.ring-2 {
+    width: 500px;
+    height: 500px;
+    bottom: -160px;
+    left: 5%
+}
+
+.ring-3 {
+    width: 280px;
+    height: 280px;
+    top: 40px;
+    right: -80px
+}
+
+.ring-4 {
+    width: 200px;
+    height: 200px;
+    bottom: 20%;
+    right: 20%
+}
+
+/* Floating food */
+.float-img {
+    position: absolute;
+    z-index: 2;
+    filter: drop-shadow(0 16px 30px rgba(0, 0, 0, 0.12))
+}
+
+.float-burger {
+    width: 280px;
+    left: 3%;
+    top: 38%;
+    animation: floatRot 7s ease-in-out infinite
+}
+
+.float-dumplings {
+    width: 200px;
+    right: 8%;
+    top: 5%;
+    animation: floatRot 6s ease-in-out infinite 0.8s
+}
+
+.float-pizza {
+    width: 240px;
+    right: 3%;
+    bottom: 10%;
+    animation: floatRot 8s ease-in-out infinite 1.5s
+}
+
+.deco-icon {
+    position: absolute;
+    font-size: 26px;
+    z-index: 1;
+    animation: floatY 5s ease-in-out infinite
+}
+
+.deco-leaf {
+    top: 8%;
+    left: 40%;
+    animation-delay: 0s
+}
+
+.deco-chili-1 {
+    bottom: 22%;
+    left: 6%;
+    animation-delay: 1.2s
+}
+
+.deco-chili-2 {
+    top: 18%;
+    right: 12%;
+    animation-delay: 2s
+}
+
+.food-text {
+    text-align: center;
+    position: relative;
+    z-index: 5
+}
+
+.food-heading {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 50px;
+    font-weight: 700;
+    color: #E23744;
+    line-height: 1.25;
+    margin-bottom: 20px
+}
+
+.food-desc {
+    font-size: 16px;
+    color: #808080;
+    line-height: 1.75
+}
+
+/* ===== SECTION 3: STATS ===== */
+.stats-section {
+    padding: 10px 24px 80px;
+    display: flex;
+    justify-content: center
+}
+
+.stats-pill {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border: 1.8px solid #ebebeb;
+    border-radius: 16px;
+    padding: 22px 44px;
+    max-width: 780px;
+    width: 100%;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04)
+}
+
+.stat {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 0 24px
+}
+
+.stat-text {
+    display: flex;
+    flex-direction: column
+}
+
+.stat-num {
+    font-size: 19px;
+    font-weight: 800;
+    color: #1c1c1c
+}
+
+.stat-lbl {
+    font-size: 13px;
+    color: #999;
+    font-weight: 400
+}
+
+.stat-ico {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.stat-ico svg {
+    display: block
+}
+
+.stat-sep {
+    width: 1px;
+    height: 50px;
+    background: #eee;
+    flex-shrink: 0
+}
+
+/* ===== SECTION 4: APP FEATURES ===== */
+.features-section {
+    position: relative;
+    padding: 80px 24px 100px;
+    overflow: hidden
+}
+
+.features-bg-pink {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, #fff5f5 0%, #ffe4e6 40%, #fff5f5 100%);
+    z-index: 0
+}
+
+.features-inner {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 960px;
+    margin: 0 auto
+}
+
+.features-heading {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 44px;
+    font-weight: 700;
+    color: #E23744;
+    line-height: 1.25;
+    margin-bottom: 14px
+}
+
+.features-sub {
+    font-size: 15px;
+    color: #999;
+    line-height: 1.7;
+    margin-bottom: 56px
+}
+
+.features-layout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 36px
+}
+
+.feat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px
+}
+
+.feat-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 18px 14px 12px;
+    width: 108px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 3px 14px rgba(0, 0, 0, 0.06);
+    cursor: pointer;
+    transition: all 0.35s ease
+}
+
+.feat-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12)
+}
+
+.feat-card span {
+    font-size: 12px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    line-height: 1.3
+}
+
+.feat-icon {
+    font-size: 32px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.feat-offers {
+    background: #1a237e;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.offers-pct {
+    color: #ffd740;
+    font-size: 22px;
+    font-weight: 900
+}
+
+/* Veg toggle */
+.feat-toggle {
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.toggle-bar {
+    width: 44px;
+    height: 24px;
+    background: #2ecc71;
+    border-radius: 12px;
+    position: relative;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1)
+}
+
+.toggle-dot {
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15)
+}
+
+/* Phone */
+.phone {
+    flex-shrink: 0
+}
+
+.phone-body {
+    width: 210px;
+    height: 370px;
+    background: #111;
+    border-radius: 34px;
+    padding: 10px;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25), 0 0 0 2px #333
+}
+
+.phone-notch {
+    width: 90px;
+    height: 20px;
+    background: #111;
+    border-radius: 0 0 12px 12px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2
+}
+
+.phone-screen {
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    border-radius: 26px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.phone-content {
+    text-align: center;
+    padding: 16px
+}
+
+.cal-box {
+    background: #fff5f5;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 14px;
+    border: 1px solid #ffe0e0
+}
+
+.cal-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+    margin-bottom: 10px
+}
+
+.cal-grid span {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #E23744;
+    opacity: 0.3;
+    margin: auto
+}
+
+.cal-grid span:nth-child(3n) {
+    opacity: 0.6
+}
+
+.cal-active {
+    opacity: 1 !important;
+    background: #E23744 !important;
+    box-shadow: 0 0 0 3px rgba(226, 55, 68, 0.2)
+}
+
+.cal-clock {
+    font-size: 26px
+}
+
+.phone-label {
+    font-size: 13px;
+    color: #333;
+    line-height: 1.3
+}
+
+/* ===== SECTION 5: GOLD ===== */
+.gold-section {
+    position: relative;
+    background: #0a0a0a;
+    padding: 110px 24px 90px;
+    overflow: hidden
+}
+
+.gold-curve-top {
+    position: absolute;
+    top: -1px;
+    left: 0;
+    right: 0;
+    z-index: 2
+}
+
+.gold-curve-top svg {
+    width: 100%;
+    height: 90px;
+    display: block
+}
+
+.gold-curve-bottom {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    z-index: 2
+}
+
+.gold-curve-bottom svg {
+    width: 100%;
+    height: 90px;
+    display: block
+}
+
+.gold-coin {
+    position: absolute;
+    z-index: 3;
+    animation: coinSpin 5s ease-in-out infinite
+}
+
+.coin-left {
+    top: 80px;
+    left: 4%;
+    width: 85px;
+    height: 85px
+}
+
+.coin-right {
+    top: 65px;
+    right: 4%;
+    width: 75px;
+    height: 75px;
+    animation-delay: 1.5s
+}
+
+.coin-face {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 4px 16px rgba(212, 168, 71, 0.35))
+}
+
+.coin-face svg {
+    width: 100%;
+    height: 100%
+}
+
+.gold-body {
+    position: relative;
+    z-index: 5;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto
+}
+
+.gold-logo {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 32px;
+    color: #fff;
+    margin-bottom: 0;
+    letter-spacing: 4px
+}
+
+.gold-heading {
+    font-size: 80px;
+    font-weight: 900;
+    letter-spacing: 12px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    color: transparent;
+    background: linear-gradient(135deg, #D4A847, #F5D68A, #B8860B, #F5D68A, #D4A847);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: goldShimmer 4s linear infinite
+}
+
+.gold-o {
+    display: inline-flex;
+    align-items: center;
+    line-height: 0
+}
+
+.gold-o svg {
+    display: block
+}
+
+.gold-tag {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.65;
+    margin-bottom: 30px
+}
+
+.gold-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #D4A847;
+    letter-spacing: 5px;
+    margin-bottom: 30px;
+    text-transform: uppercase
+}
+
+.gold-perks {
+    display: flex;
+    justify-content: center;
+    gap: 56px
+}
+
+.perk {
+    display: flex;
+    align-items: center;
+    gap: 14px
+}
+
+.perk-ico {
+    font-size: 34px
+}
+
+.perk-detail {
+    text-align: left
+}
+
+.perk-detail strong {
+    display: block;
+    font-size: 15px;
+    color: #fff;
+    margin-bottom: 2px
+}
+
+.perk-detail span {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.45)
+}
+
+/* ===== SECTION 6: CITIES ===== */
+.cities-section {
+    padding: 80px 24px 90px;
+    background: #fff
+}
+
+.cities-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: center
+}
+
+.cities-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 34px;
+    font-weight: 700;
+    color: #1c1c1c;
+    margin-bottom: 44px
+}
+
+.cities-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    margin-bottom: 40px
+}
+
+.city-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.3s
+}
+
+.city-tile:hover {
+    transform: translateY(-6px)
+}
+
+.city-thumb {
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 42px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.3s
+}
+
+.city-tile:hover .city-thumb {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.16)
+}
+
+.city-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333
+}
+
+.btn-see-all {
+    background: none;
+    border: 2px solid #E23744;
+    color: #E23744;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 36px;
+    border-radius: 10px;
+    transition: all 0.3s;
+    font-family: 'Inter', sans-serif
+}
+
+.btn-see-all:hover {
+    background: #E23744;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(226, 55, 68, 0.3)
+}
+
+/* ===== SECTION 7: FOOTER ===== */
+.footer {
+    background: #f8f8f8;
+    padding: 52px 24px 28px;
+    border-top: 1px solid #eee
+}
+
+.footer-inner {
+    max-width: 1100px;
+    margin: 0 auto
+}
+
+.footer-top {
+    display: flex;
+    gap: 48px;
+    margin-bottom: 40px
+}
+
+.footer-brand-col {
+    flex-shrink: 0;
+    min-width: 140px
+}
+
+.footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 30px;
+    color: #E23744;
+    display: block;
+    margin-bottom: 14px
+}
+
+.footer-social {
+    display: flex;
+    gap: 10px
+}
+
+.footer-social a {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #e8e8e8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    transition: all 0.3s
+}
+
+.footer-social a svg {
+    width: 16px;
+    height: 16px
+}
+
+.footer-social a:hover {
+    background: #E23744;
+    color: #fff;
+    transform: translateY(-2px)
+}
+
+.footer-links {
+    display: flex;
+    gap: 40px;
+    flex: 1;
+    flex-wrap: wrap
+}
+
+.footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 120px
+}
+
+.footer-col h4 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1c1c1c;
+    margin-bottom: 4px;
+    text-transform: capitalize
+}
+
+.footer-col a {
+    font-size: 13px;
+    color: #999;
+    transition: color 0.2s
+}
+
+.footer-col a:hover {
+    color: #E23744
+}
+
+.footer-bottom {
+    border-top: 1px solid #e0e0e0;
+    padding-top: 20px
+}
+
+.footer-bottom p {
+    font-size: 11px;
+    color: #b0b0b0;
+    line-height: 1.65;
+    text-align: center
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:960px) {
+    .hero-heading {
+        font-size: 36px
+    }
+
+    .hero-logo {
+        font-size: 34px
+    }
+
+    .features-layout {
+        flex-direction: column;
+        gap: 28px
+    }
+
+    .cities-grid {
+        grid-template-columns: repeat(2, 1fr)
+    }
+
+    .gold-perks {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center
+    }
+
+    .gold-heading {
+        font-size: 52px;
+        letter-spacing: 6px
+    }
+
+    .footer-top {
+        flex-direction: column;
+        gap: 28px
+    }
+
+    .footer-links {
+        gap: 20px
+    }
+
+    .stats-pill {
+        flex-direction: column;
+        gap: 16px;
+        padding: 20px
+    }
+
+    .stat-sep {
+        width: 80%;
+        height: 1px
+    }
+
+    .food-heading,
+    .features-heading {
+        font-size: 34px
+    }
+
+    .float-img {
+        width: 160px !important
+    }
+}
+
+@media(max-width:640px) {
+    .nav-inner {
+        padding: 14px 16px
+    }
+
+    .nav-link-text {
+        display: none
+    }
+
+    .hero-heading {
+        font-size: 28px
+    }
+
+    .hero-logo {
+        font-size: 26px
+    }
+
+    .hero-sub {
+        font-size: 14px
+    }
+
+    .hero-stores {
+        flex-direction: column;
+        gap: 10px
+    }
+
+    .cities-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px
+    }
+
+    .food-heading,
+    .features-heading {
+        font-size: 28px
+    }
+
+    .gold-heading {
+        font-size: 40px;
+        letter-spacing: 4px
+    }
+
+    .gold-o svg {
+        width: 36px;
+        height: 36px
+    }
+
+    .feat-card {
+        width: 96px;
+        padding: 14px 10px 10px
+    }
+}
