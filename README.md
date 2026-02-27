@@ -116,7 +116,7 @@ All charts are available in the `images/` folder. They include:
 | 1 | ![z-img-1](images/z-img-1.png) | Rider Wait Time Distribution |
 | 2 | ![z-img-2](images/z-img-2.png) | ETA Error Distribution |
 | 3 | ![z-img-3](images/z-img-3.png) | CDF of ETA Errors |
-| 4 | ![z-img-4](images/z-img-4.png) | P50 & P90 Error Comparison |
+| 4 | ![z-img-4](images/z-img-4.png) | P50-  Typical performance. & P90 - Worst-case stability - Error Comparison |
 | 5 | ![z-img-5](images/z-img-5.png) | Hourly Average Wait Time |
 | 6 | ![z-img-6](images/z-img-6.png) | RLRI vs True KPT |
 | 7 | ![z-img-7](images/z-img-7.png) | Feature Importance |
