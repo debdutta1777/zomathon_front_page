@@ -135,6 +135,21 @@ All charts are available in the `images/` folder. They include:
 
 ---
 
+## 📓 Google Colab Notebook
+
+Explore the complete data science and machine learning pipeline in our interactive Colab notebook:
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1zfzfIIslQnuB0_TxdpjageekwzUO26TO?usp=sharing)
+
+The notebook includes:
+- Data simulation & cleaning
+- Feature engineering (RLRI calculation)
+- Baseline & correction models (LightGBM)
+- Dispatch simulation & evaluation
+- All visualizations used in the project
+
+---
+
 ## 📁 Project Structure
 
 .
