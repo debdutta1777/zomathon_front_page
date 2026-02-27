@@ -129,7 +129,7 @@ All charts are available in the `images/` folder. They include:
 
 ## 🛠️ Tech Stack
 - **Frontend:** HTML, Tailwind CSS, JavaScript, Chart.js
-- **Backend / ML:** Python, Pandas, NumPy, LightGBM, Scikit‑learn
+- **Data Science / ML:** Python, Pandas, NumPy, LightGBM, Scikit‑learn
 - **Visualization:** Matplotlib, Seaborn (offline), Chart.js (online)
 - **Deployment:** Static site (GitHub Pages / any static host)
 
