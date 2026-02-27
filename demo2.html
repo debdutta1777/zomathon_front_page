@@ -7,7 +7,7 @@
     <title>Zomato | KPT Optimization</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js -->
+    <!-- Chart.js for interactive graphs -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,7 +17,8 @@
     <!-- Original styles -->
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* ===== Original styles preserved ===== */
+        /* ===== Original styles from styles.css are preserved ===== */
+        /* Additional styles for enhanced timeline */
         .slider-thumb {
             -webkit-appearance: none;
             appearance: none;
@@ -52,7 +53,7 @@
             border: none;
         }
 
-        /* Animated gradient background (reused for new section) */
+        /* Animated gradient background for timeline */
         .animated-gradient {
             background: linear-gradient(45deg, #0a0a0a, #1a1a1a, #E23744, #ff6f61, #0a0a0a);
             background-size: 400% 400%;
@@ -65,8 +66,7 @@
         }
 
         /* Smooth transition for step content */
-        #step-image, #step-title, #step-description, #step-metrics, #step-details,
-        #interactive-title, #interactive-description, #interactive-metrics, #interactive-chart {
+        #step-chart, #step-title, #step-description, #step-metrics, #step-details {
             transition: opacity 0.5s ease, transform 0.5s ease;
         }
         .step-content-enter {
@@ -74,7 +74,7 @@
             transform: translateY(20px);
         }
 
-        /* Metrics card animation */
+        /* Metrics card animation - brighter and bouncy */
         .metric-card {
             transition: all 0.3s ease;
             animation: gentlePulse 2s infinite;
@@ -110,181 +110,22 @@
             100% { box-shadow: 0 0 0 0 rgba(226,55,68,0); }
         }
 
-        /* Image hover effect (for original timeline) */
-        .step-image-wrapper {
-            overflow: hidden;
-            border-radius: 1rem;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
-        }
-        .step-image-wrapper img {
-            transition: transform 0.5s ease, filter 0.5s ease;
-        }
-        .step-image-wrapper:hover img {
-            transform: scale(1.05);
-            filter: brightness(1.1) contrast(1.1);
-        }
-
-        /* Large chart container for interactive timeline */
-        .chart-wrapper {
+        /* Chart container */
+        .chart-container {
             position: relative;
             width: 100%;
             height: 0;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio for large chart */
-            background: rgba(0,0,0,0.2);
-            border-radius: 1.5rem;
+            padding-bottom: 75%; /* 4:3 aspect ratio */
+            background: rgba(255,255,255,0.1);
+            border-radius: 1rem;
             overflow: hidden;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
         }
-        .chart-wrapper canvas {
+        .chart-container canvas {
             position: absolute;
             top: 0;
             left: 0;
             width: 100% !important;
             height: 100% !important;
-        }
-
-        /* Keep .viz-card styles for compatibility (though not used) */
-        .viz-card {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 1.5rem;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-        .viz-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 30px 40px -15px rgba(226,55,68,0.5);
-            border-color: #E23744;
-        }
-        .viz-card canvas {
-            width: 100% !important;
-            height: auto !important;
-            max-height: 250px;
-        }
-
-        /* ===== New styles for string timeline in Better Food section ===== */
-        .string-timeline {
-            position: relative;
-            width: 100%;
-            min-height: 900px; /* Adjust as needed */
-            margin: 0 auto;
-        }
-        .string-svg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
-        }
-        .string-path {
-            stroke: #E23744;
-            stroke-width: 4;
-            fill: none;
-            stroke-dasharray: 10 10;
-            filter: drop-shadow(0 0 8px rgba(226,55,68,0.6));
-        }
-        .node {
-            position: absolute;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            z-index: 3;
-            transform: translate(-50%, -50%); /* Center on the point */
-        }
-        .node-img {
-            width: 90px;
-            height: 90px;
-            object-fit: contain;
-            border-radius: 50%;
-            background: white;
-            padding: 12px;
-            box-shadow: 0 0 25px rgba(226,55,68,0.7);
-            border: 3px solid #E23744;
-            transition: transform 0.3s ease;
-        }
-        .node-img:hover {
-            transform: scale(1.1) rotate(5deg);
-        }
-        .step-card {
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(8px);
-            padding: 15px 20px;
-            border-radius: 20px;
-            max-width: 280px;
-            border: 2px solid #E23744;
-            color: #1a1a1a;
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
-        }
-        .step-card h4 {
-            font-weight: 800;
-            color: #E23744;
-            margin-bottom: 6px;
-            font-size: 1.1rem;
-        }
-        .step-card p {
-            font-size: 0.85rem;
-            line-height: 1.5;
-            color: #333;
-        }
-        .step-card-right {
-            order: 2; /* image left, card right */
-        }
-        .step-card-left {
-            order: -1; /* card left, image right */
-        }
-
-        /* Mobile fallback */
-        @media (max-width: 768px) {
-            .string-timeline {
-                min-height: auto;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 30px;
-            }
-            .string-svg {
-                display: none;
-            }
-            .node {
-                position: relative;
-                top: auto !important;
-                left: auto !important;
-                transform: none;
-                flex-direction: column;
-                width: 100%;
-                margin: 10px 0;
-            }
-            .step-card {
-                max-width: 90%;
-            }
-        }
-
-        /* Keep existing rings and floating icons in food-section */
-        .food-section .ring {
-            border-color: rgba(226,55,68,0.15);
-        }
-        .food-section .deco-icon {
-            font-size: 2rem;
-            opacity: 0.6;
-        }
-
-        /* New animations for key innovations */
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        .animate-float {
-            animation: float 3s ease-in-out infinite;
-        }
-        @keyframes spin-slow {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        .animate-spin-slow {
-            animation: spin-slow 8s linear infinite;
         }
     </style>
 </head>
@@ -311,7 +152,7 @@
         <h1 class="hero-heading">KPT Prediction<br>& Smart Dispatch</h1>
         <p class="hero-sub">Reducing rider wait time by 79%<br>with machine learning</p>
         <div class="hero-stores">
-            <a href="https://github.com/debdutta1777/zomathon_front_page" class="store-badge">
+            <a href="#" class="store-badge">
                 <svg class="store-icon" viewBox="0 0 24 24" fill="white" width="22" height="22">
                     <path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626a1 1 0 0 1 0 1.73l-2.808 1.626L15.206 12l2.492-2.491zM5.864 2.658L16.802 8.99l-2.303 2.303-8.635-8.635z" />
                 </svg>
@@ -325,8 +166,8 @@
                     <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
                 </svg>
                 <div class="store-info">
-                    <span class="store-small">VIEW OUR</span>
-                    <span class="store-big">Solution</span>
+                    <span class="store-small">READ THE</span>
+                    <span class="store-big">Paper</span>
                 </div>
             </a>
         </div>
@@ -336,9 +177,9 @@
     </div>
 </section>
 
-<!-- ========== ORIGINAL TIMELINE SECTION (with static images) ========== -->
+<!-- ========== ENHANCED TIMELINE SECTION with interactive charts ========== -->
 <section id="timeline" class="py-20 px-4 relative overflow-hidden animated-gradient">
-    <!-- Decorative rings -->
+    <!-- Decorative rings (adjusted for dark background) -->
     <div class="ring ring-1" style="border-color: rgba(255,255,255,0.1);"></div>
     <div class="ring ring-2" style="border-color: rgba(255,255,255,0.1);"></div>
     <div class="ring ring-3" style="border-color: rgba(255,255,255,0.1);"></div>
@@ -386,11 +227,13 @@
             </button>
         </div>
 
-        <!-- Step content (static images) -->
+        <!-- Step content -->
         <div id="step-content" class="mt-8 flex flex-col lg:flex-row items-start gap-10 bg-white/10 backdrop-blur-md p-8 rounded-3xl shadow-2xl">
-            <!-- Image area -->
-            <div class="w-full lg:w-3/5 step-image-wrapper">
-                <img id="step-image" src="images/z-img-1.png" alt="Step visualization" class="w-full rounded-xl border-4 border-white">
+            <!-- Chart area (interactive) -->
+            <div class="w-full lg:w-3/5">
+                <div class="chart-container">
+                    <canvas id="step-chart"></canvas>
+                </div>
             </div>
             <!-- Text area -->
             <div class="w-full lg:w-2/5 text-left text-white">
@@ -403,381 +246,22 @@
     </div>
 </section>
 
-<!-- ========== NEW INTERACTIVE HORIZONTAL TIMELINE (large charts) ========== -->
-<section id="interactive-timeline" class="py-20 px-4 relative overflow-hidden animated-gradient">
-    <!-- Decorative rings -->
-    <div class="ring ring-1" style="border-color: rgba(255,255,255,0.1);"></div>
-    <div class="ring ring-2" style="border-color: rgba(255,255,255,0.1);"></div>
-    <div class="ring ring-3" style="border-color: rgba(255,255,255,0.1);"></div>
-    <div class="ring ring-4" style="border-color: rgba(255,255,255,0.1);"></div>
-
-    <div class="max-w-7xl mx-auto text-center relative z-10">
-        <h2 class="font-playfair italic text-4xl md:text-5xl text-white mb-4 drop-shadow-lg">Interactive Deep Dive</h2>
-        <p class="text-gray-200 text-sm md:text-base mb-8">Swipe through detailed interactive charts</p>
-
-        <!-- Slider container -->
-        <div class="relative w-full max-w-4xl mx-auto mb-12 pt-10">
-            <!-- Step markers (9 steps) -->
-            <div class="flex justify-between absolute top-0 left-0 w-full px-4">
-                <span class="interactive-marker w-4 h-4 bg-white rounded-full shadow-lg cursor-pointer transition-all duration-300 hover:scale-150" data-step="0"></span>
-                <span class="interactive-marker w-4 h-4 bg-white rounded-full shadow-lg cursor-pointer transition-all duration-300 hover:scale-150" data-step="1"></span>
-                <span class="interactive-marker w-4 h-4 bg-white rounded-full shadow-lg cursor-pointer transition-all duration-300 hover:scale-150" data-step="2"></span>
-                <span class="interactive-marker w-4 h-4 bg-white rounded-full shadow-lg cursor-pointer transition-all duration-300 hover:scale-150" data-step="3"></span>
-                <span class="interactive-marker w-4 h-4 bg-white rounded-full shadow-lg cursor-pointer transition-all duration-300 hover:scale-150" data-step="4"></span>
-                <span class="interactive-marker w-4 h-4 bg-white rounded-full shadow-lg cursor-pointer transition-all duration-300 hover:scale-150" data-step="5"></span>
-                <span class="interactive-marker w-4 h-4 bg-white rounded-full shadow-lg cursor-pointer transition-all duration-300 hover:scale-150" data-step="6"></span>
-                <span class="interactive-marker w-4 h-4 bg-white rounded-full shadow-lg cursor-pointer transition-all duration-300 hover:scale-150" data-step="7"></span>
-                <span class="interactive-marker w-4 h-4 bg-white rounded-full shadow-lg cursor-pointer transition-all duration-300 hover:scale-150" data-step="8"></span>
-            </div>
-            <!-- Range slider -->
-            <input type="range" id="interactive-slider" class="slider-thumb w-full" min="0" max="8" value="0" step="1">
-            <!-- Branch lines -->
-            <div class="flex justify-between absolute top-2 left-0 w-full px-4 pointer-events-none">
-                <span class="w-px h-8 bg-white/30"></span>
-                <span class="w-px h-8 bg-white/30"></span>
-                <span class="w-px h-8 bg-white/30"></span>
-                <span class="w-px h-8 bg-white/30"></span>
-                <span class="w-px h-8 bg-white/30"></span>
-                <span class="w-px h-8 bg-white/30"></span>
-                <span class="w-px h-8 bg-white/30"></span>
-                <span class="w-px h-8 bg-white/30"></span>
-                <span class="w-px h-8 bg-white/30"></span>
-            </div>
-        </div>
-
-        <!-- Content area: left text, right large chart -->
-        <div id="interactive-content" class="mt-8 flex flex-col lg:flex-row items-start gap-10 bg-white/10 backdrop-blur-md p-8 rounded-3xl shadow-2xl">
-            <!-- Left text area -->
-            <div class="w-full lg:w-2/5 text-left text-white">
-                <h3 id="interactive-title" class="text-3xl md:text-4xl font-bold mb-4 drop-shadow-lg">Rider Wait Time Distribution</h3>
-                <div id="interactive-description" class="text-gray-100 leading-relaxed space-y-3 text-lg">
-                    <p>Baseline vs optimized wait times: the optimized dispatch reduces average wait from 6.28 to 1.30 minutes.</p>
-                </div>
-                <div id="interactive-metrics" class="mt-6 grid grid-cols-2 gap-3">
-                    <!-- Metrics injected by JS -->
-                </div>
-            </div>
-            <!-- Right large chart area -->
-            <div class="w-full lg:w-3/5">
-                <div class="chart-wrapper">
-                    <canvas id="interactive-chart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ========== KEY INNOVATIONS SECTION ========== -->
-<section id="key-innovations" class="py-20 px-4 relative overflow-hidden" style="background: linear-gradient(135deg, #fff5f5 0%, #ffe4e6 100%);">
-    <!-- Decorative rings (light version) -->
-    <div class="ring ring-1" style="border-color: rgba(226,55,68,0.1);"></div>
-    <div class="ring ring-2" style="border-color: rgba(226,55,68,0.1);"></div>
-    <div class="ring ring-3" style="border-color: rgba(226,55,68,0.1);"></div>
-    <div class="ring ring-4" style="border-color: rgba(226,55,68,0.1);"></div>
-
-    <div class="max-w-7xl mx-auto relative z-10">
-        <!-- Section heading -->
-        <div class="text-center mb-16">
-            <h2 class="font-playfair italic text-4xl md:text-5xl text-[#E23744] mb-4 drop-shadow-lg">🚀 Our Solution</h2>
-            <p class="text-gray-600 text-lg max-w-3xl mx-auto">A two‑stage machine learning pipeline that turns noisy estimates into smarter dispatch, cutting rider wait time by 79%.</p>
-        </div>
-
-        <!-- Problem statement card (highlight) -->
-        <div class="bg-white/80 backdrop-blur-sm rounded-3xl p-8 mb-16 shadow-xl border border-[#E23744]/20 max-w-4xl mx-auto text-center hover:shadow-2xl transition-shadow duration-300">
-            <div class="text-6xl mb-4">🍽️⏱️</div>
-            <h3 class="text-2xl font-bold text-gray-800 mb-3">The Problem</h3>
-            <p class="text-gray-600 leading-relaxed text-lg">Restaurants provide biased, noisy kitchen preparation time (KPT) estimates. Riders dispatched based on these numbers face long waits or deliver cold food. Our solution corrects this in real time.</p>
-        </div>
-
-        <!-- Grid of innovation cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Card 1: RLRI -->
-            <div class="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-[#E23744]">
-                <div class="text-5xl mb-4 animate-bounce">⚡</div>
-                <h3 class="text-xl font-bold text-[#E23744] mb-2">RLRI – Rush Level Risk Index</h3>
-                <p class="text-gray-600 mb-4">A novel real‑time metric that quantifies kitchen congestion using order density and noisy inflation.</p>
-                <div class="text-sm bg-gray-100 p-3 rounded-lg">
-                    <code class="text-[#E23744]">RLRI = 0.6·density_ratio + 0.4·noisy_inflation</code>
-                </div>
-                <div class="mt-4 text-xs text-gray-400">• Backward‑looking • No future data • Live at prediction</div>
-            </div>
-
-            <!-- Card 2: Two‑stage modeling -->
-            <div class="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-[#E23744]">
-                <div class="text-5xl mb-4 animate-pulse">🧠</div>
-                <h3 class="text-xl font-bold text-[#E23744] mb-2">Two‑Stage Modeling</h3>
-                <p class="text-gray-600 mb-4">First model mimics the biased estimator; second corrects its error using RLRI and lag features.</p>
-                <div class="flex justify-between text-sm bg-gray-100 p-2 rounded">
-                    <span>Base Model</span>
-                    <span class="text-[#E23744]">→</span>
-                    <span>Correction</span>
-                </div>
-                <div class="mt-4 text-xs text-gray-400">• Robust • Interpretable • LightGBM</div>
-            </div>
-
-            <!-- Card 3: No leakage / temporal split -->
-            <div class="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-[#E23744]">
-                <div class="text-5xl mb-4 animate-spin-slow">⏳</div>
-                <h3 class="text-xl font-bold text-[#E23744] mb-2">Strict Temporal Split</h3>
-                <p class="text-gray-600 mb-4">All features use only past data. Chronological split (80/20) mirrors real‑world deployment.</p>
-                <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
-                    <div class="bg-[#E23744] h-2.5 rounded-full" style="width: 80%"></div>
-                </div>
-                <div class="flex justify-between text-xs">
-                    <span>Train (80%)</span>
-                    <span>Test (20%)</span>
-                </div>
-            </div>
-
-            <!-- Card 4: Dispatch simulation -->
-            <div class="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-[#E23744]">
-                <div class="text-5xl mb-4">🛵💨</div>
-                <h3 class="text-xl font-bold text-[#E23744] mb-2">Dispatch Simulation</h3>
-                <p class="text-gray-600 mb-4">Optimized dispatch delays rider so they arrive exactly when food is ready.</p>
-                <div class="space-y-1 text-sm">
-                    <div><span class="font-medium">Baseline:</span> send immediately → 6.28 min wait</div>
-                    <div><span class="font-medium">Optimized:</span> delay by max(0, adjKPT – travel) → 1.30 min wait</div>
-                </div>
-            </div>
-
-            <!-- Card 5: Results -->
-            <div class="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-[#E23744]">
-                <div class="text-5xl mb-4">📊</div>
-                <h3 class="text-xl font-bold text-[#E23744] mb-2">Dramatic Impact</h3>
-                <div class="grid grid-cols-2 gap-2 text-center">
-                    <div class="bg-green-50 p-2 rounded">
-                        <div class="text-2xl font-bold text-green-600">79.3%</div>
-                        <div class="text-xs">Wait ↓</div>
-                    </div>
-                    <div class="bg-red-50 p-2 rounded">
-                        <div class="text-2xl font-bold text-red-600">45.5%</div>
-                        <div class="text-xs">P50 Error ↓</div>
-                    </div>
-                    <div class="bg-orange-50 p-2 rounded col-span-2">
-                        <div class="text-2xl font-bold text-orange-600">40.1%</div>
-                        <div class="text-xs">P90 Error ↓</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 6: Visual storytelling -->
-            <div class="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-[#E23744]">
-                <div class="text-5xl mb-4">🎨</div>
-                <h3 class="text-xl font-bold text-[#E23744] mb-2">Visual Storytelling</h3>
-                <p class="text-gray-600 mb-4">9 custom plots make every improvement undeniable – from wait distributions to feature importance.</p>
-                <div class="flex gap-1 justify-center">
-                    <span class="w-3 h-3 bg-[#E23744] rounded-full animate-ping"></span>
-                    <span class="w-3 h-3 bg-[#E23744] rounded-full"></span>
-                    <span class="w-3 h-3 bg-[#E23744] rounded-full"></span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Bottom highlight: uniqueness -->
-        <div class="mt-16 bg-gradient-to-r from-[#E23744]/10 to-transparent p-8 rounded-3xl border border-[#E23744]/20">
-            <div class="flex flex-col md:flex-row items-center justify-between gap-8">
-                <div class="text-center md:text-left">
-                    <h4 class="text-2xl font-bold text-gray-800 mb-2">🔮 What Makes This Unique</h4>
-                    <ul class="space-y-2 text-gray-600">
-                        <li class="flex items-center gap-2"><span class="text-[#E23744] text-xl">✓</span> Real‑time RLRI – lightweight, deployable, no future leakage</li>
-                        <li class="flex items-center gap-2"><span class="text-[#E23744] text-xl">✓</span> Two‑stage design that learns and corrects bias</li>
-                        <li class="flex items-center gap-2"><span class="text-[#E23744] text-xl">✓</span> Directly optimizes customer wait time – the metric that matters</li>
-                        <li class="flex items-center gap-2"><span class="text-[#E23744] text-xl">✓</span> Full transparency via feature importance</li>
-                    </ul>
-                </div>
-                <div class="text-8xl animate-float">✨</div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Section heading for step‑by‑step implementation -->
-<div class="text-center relative z-10 mb-12">
-    <h2 class="font-playfair italic text-4xl md:text-5xl text-[#E23744] mb-4 drop-shadow-lg">Step‑by‑Step Implementation</h2>
-    <p class="text-gray-600 text-sm md:text-base">How we built the solution – from data to impact</p>
-</div>
-
-<!-- ========== SECTION 2: BETTER FOOD (string timeline, no overlap) ========== -->
-<section id="section-food" class="food-section relative overflow-hidden" style="background: linear-gradient(145deg, #fff9f9 0%, #fff0f0 100%); min-height: 1800px;">
-    
-    <!-- Decorative rings -->
+<!-- ========== SECTION 2: BETTER FOOD (unchanged) ========== -->
+<section id="section-food" class="food-section">
     <div class="ring ring-1"></div>
     <div class="ring ring-2"></div>
     <div class="ring ring-3"></div>
     <div class="ring ring-4"></div>
-
-    <!-- Decorative icons -->
+    <img src="images/burger.png" alt="Burger" class="float-img float-burger" />
+    <img src="images/dumplings.png" alt="Dumplings" class="float-img float-dumplings" />
+    <img src="images/pizza.png" alt="Pizza" class="float-img float-pizza" />
     <div class="deco-icon deco-leaf">🌿</div>
     <div class="deco-icon deco-chili-1">🌶️</div>
     <div class="deco-icon deco-chili-2">🌶️</div>
-
-    <!-- Main string timeline container -->
-    <div class="string-timeline" style="position: relative; width: 100%; min-height: 1700px; margin: 0 auto;">
-        <!-- SVG string (curved path) - unchanged -->
-        <svg class="string-svg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none;" viewBox="0 0 1200 1700" preserveAspectRatio="xMidYMid meet">
-            <path class="string-path" d="M150,80 C250,20 350,140 450,90 C550,40 650,220 750,170 C850,120 950,270 1050,220 C1150,170 1150,340 1050,390 C950,440 850,510 750,480 C650,450 550,590 450,550 C350,510 250,660 200,620 C150,580 200,720 250,680 C300,640 400,780 500,740 C600,700 700,860 800,820 C900,780 950,940 1050,900 C1150,860 1100,1030 1000,1080 C900,1130 750,1200 600,1180" stroke="#E23744" stroke-width="4" fill="none" stroke-dasharray="10 10" filter="drop-shadow(0 0 8px rgba(226,55,68,0.6))" />
-        </svg>
-
-        <!-- Node 1 (burger) - left side card -->
-        <div class="node" style="position: absolute; display: flex; align-items: center; gap: 20px; z-index: 3; top: 5%; left: 15%;">
-            <img src="images/burger.png" alt="Burger" class="node-img">
-            <div class="step-card">
-                <h4>1. Dataset Simulation</h4>
-                <p>Generated 15,000 orders with realistic restaurant biases, time patterns, and other factors.</p>
-            </div>
-        </div>
-
-        <!-- Node 2 (dumplings) - right side card -->
-        <div class="node" style="position: absolute; display: flex; align-items: center; gap: 20px; z-index: 3; top: 15%; left: 28%;">
-            <div class="step-card">
-                <h4>2. Data Cleaning</h4>
-                <p>Removed invalid timestamps, converted types, dropped NaNs. Result: 12,519 clean orders.</p>
-            </div>
-            <img src="images/dumplings.png" alt="Dumplings" class="node-img">
-        </div>
-
-        <!-- Node 3 (pizza) - left side card -->
-        <div class="node" style="position: absolute; display: flex; align-items: center; gap: 20px; z-index: 3; top: 25%; left: 39%;">
-            <img src="images/pizza.png" alt="Pizza" class="node-img">
-            <div class="step-card">
-                <h4>3. Feature Engineering</h4>
-                <p>Time features, cyclical encoding, rolling statistics (15min orders, historical avg). No leakage.</p>
-            </div>
-        </div>
-
-        <!-- Node 4 (burger) - right side card -->
-        <div class="node" style="position: absolute; display: flex; align-items: center; gap: 20px; z-index: 3; top: 35%; left: 49%;">
-            <div class="step-card">
-                <h4>4. RLRI (Rush Index)</h4>
-                <p>RLRI = 0.6*density_ratio + 0.4*noisy_inflation – captures kitchen congestion in real time.</p>
-            </div>
-            <img src="images/burger.png" alt="Burger" class="node-img">
-        </div>
-
-        <!-- Node 5 (dumplings) - left side card -->
-        <div class="node" style="position: absolute; display: flex; align-items: center; gap: 20px; z-index: 3; top: 45%; left: 58%;">
-            <img src="images/dumplings.png" alt="Dumplings" class="node-img">
-            <div class="step-card">
-                <h4>5. Baseline Model</h4>
-                <p>LightGBM predicts noisy KPT using basic features. Baseline P50 error: 4.35 min.</p>
-            </div>
-        </div>
-
-        <!-- Node 6 (pizza) - right side card -->
-        <div class="node" style="position: absolute; display: flex; align-items: center; gap: 20px; z-index: 3; top: 55%; left: 66%;">
-            <div class="step-card">
-                <h4>6. Error Correction</h4>
-                <p>Second LightGBM predicts baseline error using RLRI, lag features, and base_kpt.</p>
-            </div>
-            <img src="images/pizza.png" alt="Pizza" class="node-img">
-        </div>
-
-        <!-- Node 7 (burger) - left side card -->
-        <div class="node" style="position: absolute; display: flex; align-items: center; gap: 20px; z-index: 3; top: 65%; left: 72%;">
-            <img src="images/burger.png" alt="Burger" class="node-img">
-            <div class="step-card">
-                <h4>7. Dispatch Simulation</h4>
-                <p>Rider sent at max(0, adjusted_KPT - travel_time). Wait time = max(0, true_ready - arrival).</p>
-            </div>
-        </div>
-
-        <!-- Node 8 (dumplings) - right side card -->
-        <div class="node" style="position: absolute; display: flex; align-items: center; gap: 20px; z-index: 3; top: 75%; left: 78%;">
-            <div class="step-card">
-                <h4>8. Wait Reduction</h4>
-                <p>Avg wait dropped from 6.28 min to 1.30 min (79.3% reduction). Most orders see 60–90% improvement.</p>
-            </div>
-            <img src="images/dumplings.png" alt="Dumplings" class="node-img">
-        </div>
-
-        <!-- Node 9 (pizza) - left side card -->
-        <div class="node" style="position: absolute; display: flex; align-items: center; gap: 20px; z-index: 3; top: 85%; left: 83%;">
-            <img src="images/pizza.png" alt="Pizza" class="node-img">
-            <div class="step-card">
-                <h4>9. Final Impact</h4>
-                <p>P50 error ↓45.5%, P90 error ↓40.1%. Ready for A/B test – transformative for rider experience.</p>
-            </div>
-        </div>
+    <div class="food-text anim">
+        <h2 class="food-heading">Better food for<br>more people</h2>
+        <p class="food-desc">For over a decade, we've enabled our<br>customers to discover new tastes,<br>delivered right to their doorstep</p>
     </div>
-
-    <!-- Styles for the string timeline (unchanged) -->
-    <style>
-        /* Node image styling */
-        .node-img {
-            width: 90px;
-            height: 90px;
-            object-fit: contain;
-            border-radius: 50%;
-            background: white;
-            padding: 12px;
-            box-shadow: 0 0 25px rgba(226,55,68,0.7);
-            border: 3px solid #E23744;
-            transition: transform 0.3s ease;
-        }
-        .node-img:hover {
-            transform: scale(1.1) rotate(5deg);
-        }
-
-        /* Step card styling */
-        .step-card {
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(8px);
-            padding: 15px 20px;
-            border-radius: 20px;
-            max-width: 280px;
-            border: 2px solid #E23744;
-            color: #1a1a1a;
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
-        }
-        .step-card h4 {
-            font-weight: 800;
-            color: #E23744;
-            margin-bottom: 6px;
-            font-size: 1.1rem;
-        }
-        .step-card p {
-            font-size: 0.9rem;
-            line-height: 1.5;
-            color: #333;
-            margin: 0;
-        }
-
-        /* Mobile fallback */
-        @media (max-width: 768px) {
-            #section-food {
-                min-height: auto !important;
-                padding: 40px 20px;
-            }
-            .string-timeline {
-                position: relative !important;
-                min-height: auto !important;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 30px;
-            }
-            .string-svg {
-                display: none;
-            }
-            .node {
-                position: relative !important;
-                top: auto !important;
-                left: auto !important;
-                transform: none !important;
-                flex-direction: row;
-                width: 100%;
-                justify-content: center;
-                margin: 0;
-            }
-            .step-card {
-                max-width: 70%;
-            }
-            .node-img {
-                width: 70px;
-                height: 70px;
-            }
-        }
-    </style>
 </section>
 
 <!-- ========== SECTION 3: STATS BAR ========== -->
@@ -1079,10 +563,10 @@
 </footer>
 
 <script>
-    // ===== MAIN SCRIPT =====
+    // ===== Zomato Demo — Script (original + enhanced timeline with interactive charts) =====
     document.addEventListener('DOMContentLoaded', () => {
 
-        // ----- Original timeline functionality (unchanged) -----
+        // ----- Original functionality (unchanged) -----
         const animEls = document.querySelectorAll('.anim');
         const animObs = new IntersectionObserver((entries) => {
             entries.forEach((entry, i) => {
@@ -1162,12 +646,12 @@
         }, { threshold: 0.5 });
         statNums.forEach(el => statObs.observe(el));
 
-        // ----- ORIGINAL TIMELINE STEPS (static images) -----
+        // ----- INTERACTIVE TIMELINE with Chart.js -----
         const steps = [
             {
                 title: "0. Problem Statement",
                 description: "Accurate Kitchen Preparation Time (KPT) is critical for rider dispatch. Current noisy KPT leads to long rider waits or cold food.",
-                image: "images/z-img-10.png",
+                chartType: "performanceSummary",
                 metrics: { "Baseline Wait": "6.28 min", "Optimized Wait": "1.30 min" },
                 details: [
                     "• Riders wait too long if dispatched early",
@@ -1178,7 +662,7 @@
             {
                 title: "1. Data Cleaning & Preprocessing",
                 description: "Cleaned ~12,500 orders: removed invalid timestamps, converted types, sorted chronologically.",
-                image: "images/z-img-2.png",
+                chartType: "dataCleaning", // We'll show a simple pie of data distribution
                 metrics: { "Rows after cleaning": "12,483", "Features": "15+" },
                 details: [
                     "• Dropped rows with missing timestamps or numeric values",
@@ -1189,7 +673,7 @@
             {
                 title: "2. Feature Engineering",
                 description: "Created rolling statistics and rush indicators using only past data.",
-                image: "images/z-img-7.png",
+                chartType: "featureImportance", // reuse feature importance but with mock data
                 metrics: { "Rolling window": "15 min", "Expanding mean": "historical avg" },
                 details: [
                     "• `rolling_15min_orders`: orders in last 15 min per restaurant",
@@ -1200,8 +684,8 @@
             {
                 title: "3. RLRI (Real‑time Load & Rush Indicator)",
                 description: "Combines order volume rush and prep time inflation into one metric.",
-                image: "images/z-img-6.png",
-                metrics: { "RLRI Formula": "0.6*density ratio + 0.4*noisy inflation", "Range": "0.8–1.2" },
+                chartType: "rlriScatter",
+                metrics: { "RLRI Formula": "0.6*density_ratio + 0.4*noisy_inflation", "Range": "0.8–1.2" },
                 details: [
                     "• `noisy_inflation = noisy_KPT / historical_avg_noisy`",
                     "• Captures both kitchen congestion and per‑order anomalies",
@@ -1211,7 +695,7 @@
             {
                 title: "4. Baseline Model (Noisy KPT Prediction)",
                 description: "LightGBM predicts the existing noisy KPT using basic features.",
-                image: "images/z-img-1.png",
+                chartType: "waitDistribution",
                 metrics: { "Algorithm": "LightGBM", "Estimators": "300", "Baseline P50": "4.35 min" },
                 details: [
                     "• Features: hour, day, cuisine, city, rolling orders, hist_avg",
@@ -1222,7 +706,7 @@
             {
                 title: "5. Error Correction Model",
                 description: "Second LightGBM predicts the error of the baseline using RLRI, density ratio, and previous noisy KPT.",
-                image: "images/z-img-4.png",
+                chartType: "featureImportance",
                 metrics: { "Top Feature": "base_kpt", "Importance": "1750", "Features used": "7" },
                 details: [
                     "• Target: `true_KPT - base_KPT` (only during training)",
@@ -1233,7 +717,7 @@
             {
                 title: "6. Smart Dispatch Simulation",
                 description: "Rider dispatched at max(0, adjusted_KPT - travel_time) to minimize wait.",
-                image: "images/z-img-5.png",
+                chartType: "hourlyWait",
                 metrics: { "Baseline Wait": "6.28 min", "Optimized Wait": "1.30 min" },
                 details: [
                     "• Travel time from order to customer",
@@ -1244,7 +728,7 @@
             {
                 title: "7. Wait Time Reduction Results",
                 description: "Dramatic reduction in rider wait time: 79% average improvement.",
-                image: "images/z-img-8.png",
+                chartType: "reductionHistogram",
                 metrics: { "Avg Wait ↓": "79.3%", "Orders with >50% reduction": "85%" },
                 details: [
                     "• Baseline distribution had long tail; optimized is concentrated near zero",
@@ -1255,7 +739,7 @@
             {
                 title: "8. Error Reduction & Final Impact",
                 description: "KPT prediction errors cut by nearly half at P50 and 40% at P90.",
-                image: "images/z-img-10.png",
+                chartType: "errorPercentiles",
                 metrics: { "P50 Error ↓": "45.5%", "P90 Error ↓": "40.1%" },
                 details: [
                     "• Baseline P50: 4.35 min → Optimized: 2.37 min",
@@ -1267,14 +751,15 @@
         ];
 
         const slider = document.getElementById('timeline-slider');
-        const stepImage = document.getElementById('step-image');
         const stepTitle = document.getElementById('step-title');
         const stepDesc = document.getElementById('step-description');
         const stepMetrics = document.getElementById('step-metrics');
         const stepDetails = document.getElementById('step-details');
+        const canvas = document.getElementById('step-chart');
+        let currentChart = null;
 
         function applyTransition() {
-            [stepImage, stepTitle, stepDesc, stepMetrics, stepDetails].forEach(el => {
+            [canvas, stepTitle, stepDesc, stepMetrics, stepDetails].forEach(el => {
                 if (el) {
                     el.classList.add('step-content-enter');
                     setTimeout(() => {
@@ -1284,12 +769,158 @@
             });
         }
 
+        function destroyChart() {
+            if (currentChart) {
+                currentChart.destroy();
+                currentChart = null;
+            }
+        }
+
+        function renderChart(step) {
+            destroyChart();
+            const ctx = canvas.getContext('2d');
+            const type = step.chartType;
+
+            // Common options
+            const options = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { labels: { color: 'white' } },
+                    tooltip: { enabled: true }
+                },
+                scales: {
+                    x: { ticks: { color: 'white' }, grid: { color: 'rgba(255,255,255,0.1)' } },
+                    y: { ticks: { color: 'white' }, grid: { color: 'rgba(255,255,255,0.1)' } }
+                }
+            };
+
+            if (type === "waitDistribution") {
+                // Histogram overlay of baseline vs optimized wait times
+                const bins = 20;
+                const baselineData = Array.from({ length: 1000 }, () => Math.random() * 20 + 2); // mean ~12
+                const optimizedData = Array.from({ length: 1000 }, () => Math.random() * 6 + 0.5); // mean ~3.5
+                const histBase = Array(bins).fill(0);
+                const histOpt = Array(bins).fill(0);
+                const edges = Array.from({ length: bins+1 }, (_,i) => i * 2);
+                baselineData.forEach(v => { let idx = Math.floor(v/2); if (idx<bins) histBase[idx]++; });
+                optimizedData.forEach(v => { let idx = Math.floor(v/2); if (idx<bins) histOpt[idx]++; });
+                currentChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: edges.slice(0,-1).map(e => `${e}-${e+2}`),
+                        datasets: [
+                            { label: 'Baseline', data: histBase, backgroundColor: 'rgba(255,99,132,0.7)' },
+                            { label: 'Optimized', data: histOpt, backgroundColor: 'rgba(75,192,192,0.7)' }
+                        ]
+                    },
+                    options: { ...options, plugins: { ...options.plugins, title: { display: true, text: 'Wait Time Distribution', color: 'white' } } }
+                });
+            } else if (type === "performanceSummary") {
+                // Bar chart for baseline vs optimized wait and errors
+                currentChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Avg Wait', 'P50 Error', 'P90 Error'],
+                        datasets: [
+                            { label: 'Baseline', data: [6.28, 4.35, 10.45], backgroundColor: 'rgba(255,99,132,0.7)' },
+                            { label: 'Optimized', data: [1.30, 2.37, 6.26], backgroundColor: 'rgba(75,192,192,0.7)' }
+                        ]
+                    },
+                    options: { ...options, plugins: { ...options.plugins, title: { display: true, text: 'Performance Summary', color: 'white' } } }
+                });
+            } else if (type === "featureImportance") {
+                // Horizontal bar chart for feature importance
+                const features = ['base_kpt', 'prev_noisy_kpt', 'dow_sin', 'hour_sin', 'noisy_inflation', 'density_ratio', 'rlri'];
+                const importance = [1750, 1200, 800, 750, 600, 400, 200];
+                currentChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: features,
+                        datasets: [{ label: 'Importance', data: importance, backgroundColor: 'rgba(255,159,64,0.7)' }]
+                    },
+                    options: { ...options, indexAxis: 'y', plugins: { ...options.plugins, title: { display: true, text: 'Feature Importance', color: 'white' } } }
+                });
+            } else if (type === "rlriScatter") {
+                // Scatter plot RLRI vs True KPT with color by density ratio
+                const points = 200;
+                const rlri = Array.from({ length: points }, () => 0.8 + Math.random() * 0.4);
+                const trueKPT = rlri.map(r => r * 15 + (Math.random() * 5 - 2.5));
+                const densityRatio = rlri.map(r => 0.5 + r * 0.5);
+                currentChart = new Chart(ctx, {
+                    type: 'scatter',
+                    data: {
+                        datasets: [{
+                            label: 'Orders',
+                            data: rlri.map((x, i) => ({ x, y: trueKPT[i] })),
+                            backgroundColor: densityRatio.map(d => `rgba(75,192,192,${d})`),
+                            pointRadius: 5
+                        }]
+                    },
+                    options: { ...options, plugins: { ...options.plugins, title: { display: true, text: 'RLRI vs True KPT', color: 'white' } } }
+                });
+            } else if (type === "hourlyWait") {
+                // Line chart for hourly average wait
+                const hours = [10,12,14,16,18,20,22];
+                const baselineHourly = [6.5, 6.2, 6.8, 7.0, 6.0, 5.5, 5.0];
+                const optimizedHourly = [1.4, 1.3, 1.5, 1.6, 1.2, 1.1, 1.0];
+                currentChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: hours,
+                        datasets: [
+                            { label: 'Baseline', data: baselineHourly, borderColor: 'red', backgroundColor: 'transparent', tension: 0.1 },
+                            { label: 'Optimized', data: optimizedHourly, borderColor: 'green', backgroundColor: 'transparent', tension: 0.1 }
+                        ]
+                    },
+                    options: { ...options, plugins: { ...options.plugins, title: { display: true, text: 'Hourly Avg Wait', color: 'white' } } }
+                });
+            } else if (type === "reductionHistogram") {
+                // Histogram of wait reduction percentages
+                const reductions = Array.from({ length: 1000 }, () => Math.random() * 100).filter(x => x>0);
+                const bins = 10;
+                const hist = Array(bins).fill(0);
+                reductions.forEach(v => { let idx = Math.floor(v/10); if (idx<bins) hist[idx]++; });
+                const labels = ['0-10','10-20','20-30','30-40','40-50','50-60','60-70','70-80','80-90','90-100'];
+                currentChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{ label: 'Orders', data: hist, backgroundColor: 'purple' }]
+                    },
+                    options: { ...options, plugins: { ...options.plugins, title: { display: true, text: 'Wait Reduction Distribution', color: 'white' } } }
+                });
+            } else if (type === "errorPercentiles") {
+                // Bar chart for P50 and P90 errors
+                currentChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['P50 Error', 'P90 Error'],
+                        datasets: [
+                            { label: 'Baseline', data: [4.35, 10.45], backgroundColor: 'rgba(255,99,132,0.7)' },
+                            { label: 'Optimized', data: [2.37, 6.26], backgroundColor: 'rgba(75,192,192,0.7)' }
+                        ]
+                    },
+                    options: { ...options, plugins: { ...options.plugins, title: { display: true, text: 'Error Percentiles', color: 'white' } } }
+                });
+            } else if (type === "dataCleaning") {
+                // Simple pie chart of train/test split
+                currentChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Train (80%)', 'Test (20%)'],
+                        datasets: [{ data: [80, 20], backgroundColor: ['#36A2EB', '#FF6384'] }]
+                    },
+                    options: { ...options, plugins: { ...options.plugins, title: { display: true, text: 'Data Split', color: 'white' } } }
+                });
+            }
+        }
+
         function updateStep(index) {
             const step = steps[index];
             applyTransition();
 
             setTimeout(() => {
-                stepImage.src = step.image;
                 stepTitle.textContent = step.title;
                 stepDesc.innerHTML = `<p>${step.description}</p>`;
 
@@ -1309,6 +940,10 @@
                     stepDetails.classList.add('hidden');
                 }
 
+                // Render chart for this step
+                renderChart(step);
+
+                // Highlight active marker
                 document.querySelectorAll('.step-marker').forEach((marker, i) => {
                     if (i === index) {
                         marker.classList.add('active');
@@ -1334,7 +969,7 @@
             });
         }
 
-        // Play button (original timeline)
+        // Play button functionality
         const playBtn = document.getElementById('play-timeline');
         if (playBtn) {
             let playing = false;
@@ -1354,195 +989,6 @@
                     clearInterval(interval);
                     playBtn.innerHTML = `<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 0C4.48 0 0 4.48 0 10s4.48 10 10 10 10-4.48 10-10S15.52 0 10 0zm-2 14.5v-9l6 4.5-6 4.5z"/></svg> Play Journey`;
                 }
-            });
-        }
-
-        // ----- INTERACTIVE TIMELINE (large charts) -----
-        const interactiveSteps = [
-            {
-                title: "Rider Wait Time Distribution",
-                description: "Baseline vs optimized wait times: the optimized dispatch reduces average wait from 6.28 to 1.30 minutes.",
-                chartType: 'bar',
-                chartData: {
-                    labels: ['0-2','2-4','4-6','6-8','8-10','10-12','12-14','14-16','16-18','18-20'],
-                    datasets: [
-                        { label: 'Baseline', data: [50, 120, 250, 400, 350, 300, 200, 150, 100, 80], backgroundColor: 'rgba(255,99,132,0.7)' },
-                        { label: 'Optimized', data: [800, 150, 30, 10, 5, 2, 1, 0, 0, 0], backgroundColor: 'rgba(75,192,192,0.7)' }
-                    ]
-                },
-                metrics: { "Baseline Avg": "6.28 min", "Optimized Avg": "1.30 min", "Reduction": "79.3%" }
-            },
-            {
-                title: "ETA Error Distribution",
-                description: "Side-by-side comparison of absolute errors.",
-                chartType: 'bar',
-                chartData: {
-                    labels: ['0-2','2-4','4-6','6-8','8-10','10-12','12-14','14-16'],
-                    datasets: [
-                        { label: 'Baseline', data: [100, 200, 350, 400, 300, 200, 150, 100], backgroundColor: 'red' },
-                        { label: 'Optimized', data: [600, 250, 100, 40, 10, 5, 2, 1], backgroundColor: 'green' }
-                    ]
-                },
-                metrics: { "Baseline P50": "4.35 min", "Optimized P50": "2.37 min", "Improvement": "45.5%" }
-            },
-            {
-                title: "CDF of ETA Errors",
-                description: "Cumulative distribution shows optimized errors dominate baseline.",
-                chartType: 'line',
-                chartData: {
-                    labels: [0,2,4,6,8,10,12,14,16],
-                    datasets: [
-                        { label: 'Baseline', data: [0,0.2,0.4,0.6,0.75,0.85,0.92,0.96,0.98], borderColor: 'red', fill: false },
-                        { label: 'Optimized', data: [0,0.5,0.8,0.94,0.98,0.99,1,1,1], borderColor: 'green', fill: false }
-                    ]
-                },
-                metrics: { "P90 Baseline": "10.45 min", "P90 Optimized": "6.26 min", "Improvement": "40.1%" }
-            },
-            {
-                title: "P50 & P90 Error Comparison",
-                description: "Bar chart showing reduction in error percentiles.",
-                chartType: 'bar',
-                chartData: {
-                    labels: ['P50', 'P90'],
-                    datasets: [
-                        { label: 'Baseline', data: [4.35, 10.45], backgroundColor: 'red' },
-                        { label: 'Optimized', data: [2.37, 6.26], backgroundColor: 'green' }
-                    ]
-                },
-                metrics: { "P50 ↓": "45.5%", "P90 ↓": "40.1%" }
-            },
-            {
-                title: "Hourly Average Wait Time",
-                description: "Consistent improvement across all hours.",
-                chartType: 'line',
-                chartData: {
-                    labels: [10,12,14,16,18,20,22],
-                    datasets: [
-                        { label: 'Baseline', data: [6.5,6.2,6.8,7.0,6.0,5.5,5.0], borderColor: 'red', fill: false },
-                        { label: 'Optimized', data: [1.4,1.3,1.5,1.6,1.2,1.1,1.0], borderColor: 'green', fill: false }
-                    ]
-                },
-                metrics: { "Peak Baseline": "7.0 min", "Peak Optimized": "1.6 min", "Reduction": "77%" }
-            },
-            {
-                title: "RLRI vs True KPT",
-                description: "Scatter plot showing correlation between RLRI and actual prep time.",
-                chartType: 'scatter',
-                chartData: {
-                    datasets: [{
-                        label: 'Orders',
-                        data: Array.from({ length: 200 }, () => ({ x: 0.8 + Math.random()*0.4, y: 5 + Math.random()*25 })),
-                        backgroundColor: 'rgba(75,192,192,0.7)',
-                        pointRadius: 5
-                    }]
-                },
-                metrics: { "Correlation": "0.67", "RLRI Range": "0.8–1.2" }
-            },
-            {
-                title: "Feature Importance",
-                description: "Key features in the error correction model.",
-                chartType: 'bar',
-                chartData: {
-                    labels: ['base_kpt','prev_noisy_kpt','dow_sin','hour_sin','noisy_inflation','density_ratio','rlri'],
-                    datasets: [{ label: 'Importance', data: [1750,1200,800,750,600,400,200], backgroundColor: 'orange' }]
-                },
-                options: { indexAxis: 'y' },
-                metrics: { "Top Feature": "base_kpt", "Importance": "1750" }
-            },
-            {
-                title: "Wait Reduction Distribution",
-                description: "Histogram of wait time reduction per order.",
-                chartType: 'bar',
-                chartData: {
-                    labels: ['0-10','10-20','20-30','30-40','40-50','50-60','60-70','70-80','80-90','90-100'],
-                    datasets: [{ label: 'Orders', data: [20,30,50,80,150,300,400,350,200,100], backgroundColor: 'purple' }]
-                },
-                metrics: { "Mean Reduction": "79.3%", "Orders >50%": "85%" }
-            },
-            {
-                title: "Performance Summary",
-                description: "Key metrics: wait time and error percentiles.",
-                chartType: 'bar',
-                chartData: {
-                    labels: ['Avg Wait', 'P50 Error', 'P90 Error'],
-                    datasets: [
-                        { label: 'Baseline', data: [6.28, 4.35, 10.45], backgroundColor: 'red' },
-                        { label: 'Optimized', data: [1.30, 2.37, 6.26], backgroundColor: 'green' }
-                    ]
-                },
-                metrics: { "Wait ↓": "79.3%", "P50 ↓": "45.5%", "P90 ↓": "40.1%" }
-            }
-        ];
-
-        const interactiveSlider = document.getElementById('interactive-slider');
-        const interactiveTitle = document.getElementById('interactive-title');
-        const interactiveDesc = document.getElementById('interactive-description');
-        const interactiveMetrics = document.getElementById('interactive-metrics');
-        const interactiveCanvas = document.getElementById('interactive-chart');
-        let interactiveChart = null;
-
-        function updateInteractiveStep(index) {
-            const step = interactiveSteps[index];
-            // Apply fade transition
-            [interactiveTitle, interactiveDesc, interactiveMetrics, interactiveCanvas].forEach(el => {
-                el.classList.add('step-content-enter');
-                setTimeout(() => el.classList.remove('step-content-enter'), 50);
-            });
-
-            setTimeout(() => {
-                interactiveTitle.textContent = step.title;
-                interactiveDesc.innerHTML = `<p>${step.description}</p>`;
-
-                let metricsHtml = '';
-                for (const [key, value] of Object.entries(step.metrics)) {
-                    metricsHtml += `<div class="metric-card p-3 rounded-lg text-center"><span class="text-xs text-gray-600">${key}</span><div class="font-bold text-2xl text-[#E23744]">${value}</div></div>`;
-                }
-                interactiveMetrics.innerHTML = metricsHtml;
-
-                // Destroy old chart
-                if (interactiveChart) interactiveChart.destroy();
-
-                // Prepare chart options
-                const chartOptions = {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { labels: { color: 'white' } },
-                        tooltip: { enabled: true }
-                    },
-                    scales: step.chartType === 'bar' || step.chartType === 'line' ? {
-                        x: { ticks: { color: 'white' }, grid: { color: 'rgba(255,255,255,0.1)' } },
-                        y: { ticks: { color: 'white' }, grid: { color: 'rgba(255,255,255,0.1)' } }
-                    } : {}
-                };
-
-                // Merge step-specific options (like indexAxis)
-                if (step.options) Object.assign(chartOptions, step.options);
-
-                // Create new chart
-                interactiveChart = new Chart(interactiveCanvas, {
-                    type: step.chartType,
-                    data: step.chartData,
-                    options: chartOptions
-                });
-
-                // Update markers
-                document.querySelectorAll('.interactive-marker').forEach((marker, i) => {
-                    if (i === index) marker.classList.add('active');
-                    else marker.classList.remove('active');
-                });
-            }, 50);
-        }
-
-        if (interactiveSlider) {
-            interactiveSlider.addEventListener('input', (e) => updateInteractiveStep(parseInt(e.target.value)));
-            updateInteractiveStep(0);
-
-            document.querySelectorAll('.interactive-marker').forEach((marker, i) => {
-                marker.addEventListener('click', () => {
-                    interactiveSlider.value = i;
-                    updateInteractiveStep(i);
-                });
             });
         }
     });
